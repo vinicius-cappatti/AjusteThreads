@@ -1,3 +1,19 @@
+/* **********************************************************************************
+* PARTICIPANTES:
+*   Thomaz de Souza Scopel | RA: 10417183 | Email: 10417183@mackenzista.com.br
+*   Vinicius Sanches Cappatti | RA: 10418266 | Email: 10418266@mackenzista.com.br
+* OBJETIVO:
+*   Identificar o problema do codigo disponibilizado pela atividade, disponivel no
+*   arquivo codigoOriginal.c desse repositorio, e solucionar para impedir que as
+*   threads entrem em conflito.
+* RESOLUÇÃO:
+*   Utilizar as funções pthread_mutex_lock e pthread_mutex_unlock na execução de
+*   cada saque ou depósito para evitar que múltiplas threads acessem o 'balance' da
+*   conta bancária ao mesmo tempo. As alterações foram feitas nas funções 
+*   transaction_dep e transaction_sac, executadas por cada thread.
+*   As alterações estão nas linhas 54, 56, 65 e 67
+********************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -23,8 +39,8 @@ void deposit(BankAccount *account, int amount) {
 // Função para sacar uma quantia da conta
 void withdraw(BankAccount *account, int amount) {
     if (account->balance >= amount) {
-    account->balance-= amount;
-    printf("Sacado: %d, Saldo Atual: %d\n", amount, account->balance);
+        account->balance-= amount;
+        printf("Sacado: %d, Saldo Atual: %d\n", amount, account->balance);
     } else {
         printf("Saldo Insuficiente para saque: %d\n", amount);
     }
@@ -35,7 +51,9 @@ void* transaction_dep(void* arg) {
     BankAccount *account = (BankAccount*)arg;
     // Realiza uma série de depósitos e saques
     for (int i = 0; i < 5; i++) {
+        pthread_mutex_lock(&account->mutex); // Proteção do balanço
         deposit(account, TRANSFER_AMOUNT);
+        pthread_mutex_unlock(&account->mutex); // Liberação para as outras threads
         sleep(3); // Simula algum tempo de processamento
     }
     return NULL;
@@ -44,8 +62,10 @@ void* transaction_sac(void* arg) {
     BankAccount *account = (BankAccount*)arg;
     // Realiza uma série de depósitos e saques
     for (int i = 0; i < 5; i++) {
-    withdraw(account, TRANSFER_AMOUNT);
-    sleep(1); // Simula algum tempo de processamento
+        pthread_mutex_lock(&account->mutex); // Proteção do balanço
+        withdraw(account, TRANSFER_AMOUNT);
+        pthread_mutex_unlock(&account->mutex); // Liberação para as outras threads
+        sleep(1); // Simula algum tempo de processamento
     }
     return NULL; 
 }
