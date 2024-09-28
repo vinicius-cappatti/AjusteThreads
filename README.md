@@ -16,7 +16,7 @@ Tendo sido disponibilizado um código em C (arquivo codigoOrinal.c) contendo um 
 O código original não protegia o acesso ao atributo 'balance' da conta bancária, o que permitia que múltiplas threads o acessassem de forma simultânea e, ocasionalmente, houvesse erros no cálculo do saldo bancário e na exibição do extrato.
 
 Exemplo do erro encontrado:
-![alt text](image.png)
+![Exemplo erro](/workspaces/AjusteThreads/printsRetirados/image.png)
 
 Neste fim de execução é possivel observar que houve um erro pois ao adicionar mais 50 ao fim após ter chegado em 1500, o saldo total foi para 1450 e o saldo final permaneceu 1500, o que demonstra o provável conflito entre diferentes threads em execução.
 
@@ -28,8 +28,8 @@ O código ajustado pode ser consultado no arquivo solucao.c e executado pelo arq
 
 **Casos Teste**
 Caso teste 1:
-![alt text](image-1.png)
-![alt text](image-2.png)
+![Teste1](/workspaces/AjusteThreads/printsRetirados/image-1.png)
+![Teste1.1](/workspaces/AjusteThreads/printsRetirados/image-2.png)
 Caso teste 2:
-![alt text](image-3.png)
-![alt text](image-4.png)
+![Teste2](/workspaces/AjusteThreads/printsRetirados/image-3.png)
+![Teste2.1](/workspaces/AjusteThreads/printsRetirados/image-4.png)
