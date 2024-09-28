@@ -25,16 +25,21 @@ Neste fim de execução é possivel observar que houve um erro pois ao adicionar
 
 Utilizar as funções pthread_mutex_lock e pthread_mutex_unlock para proteger o acesso ao atributo pelas threads, liberando-o somente após o fim de uma operação por uma delas. Isso impede que uma operação feita por uma das threads sobrescreva a outra e soluciona o problema original.
 
+Além disso, foi necessário alterar a ordem de criação das threads de saque para que esperassem o fim da execução das threads de depósito.
+
+Com essas alterações, o saldo remanescente das operações é sempre 1000, visto que o mesmo número de operações de depósito e de saque são operadas.
+
 O código ajustado pode ser consultado no arquivo solucao.c e executado pelo arquivo solucao, que é o executável compilado no ambiente Linux do Github Codespaces.
 
 **Casos Teste**
 
 Caso teste 1:
 
-![Teste1](/printsRetirados/image-1.png)
-![Teste1.1](/printsRetirados/image-2.png)
+![Teste 1](/printsRetirados/teste1.png)
+![Teste 1.1](/printsRetirados/teste1_1.png)
 
 Caso teste 2:
 
-![Teste2](/printsRetirados/image-3.png)
-![Teste2.1](/printsRetirados/image-4.png)
+![Teste 2](/printsRetirados/teste2.png)
+![Teste 2.1](/printsRetirados/teste2_1.png)
+

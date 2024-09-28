@@ -11,7 +11,9 @@
 *   cada saque ou depósito para evitar que múltiplas threads acessem o 'balance' da
 *   conta bancária ao mesmo tempo. As alterações foram feitas nas funções 
 *   transaction_dep e transaction_sac, executadas por cada thread.
-*   As alterações estão nas linhas 54, 56, 65 e 67
+*   As alterações estão nas linhas 54, 56, 65 e 67.
+*   Além disso, foi necessário alterar a ordem de criação das threads de saque para
+*   que esperassem o fim da execução das threads de depósito.
 ********************************************************************************** */
 
 #include <stdio.h>
@@ -77,7 +79,7 @@ int main() {
     account.balance = INITIAL_BALANCE;
     pthread_mutex_init(&account.mutex, NULL);
     
-    // Cria as threads
+    // Cria as threads de depósito
     for (int i = 0; i < NUM_THREADS; i++) {
         if (pthread_create(&threads_dep[i], NULL, transaction_dep, &account) != 0) {
             perror("pthread_create failed");
@@ -85,14 +87,7 @@ int main() {
         }
     }
 
-    for (int i = 0; i < NUM_THREADS; i++) {
-        if (pthread_create(&threads_sac[i], NULL, transaction_sac, &account) != 0) {
-            perror("pthread_create failed");
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    // Espera todas as threads terminarem
+    // Espera todas as threads de depósito terminarem terminarem
     for (int i = 0; i < NUM_THREADS; i++) {
         if (pthread_join(threads_dep[i], NULL) != 0) {
             perror("pthread_join failed");
@@ -101,6 +96,15 @@ int main() {
         }
     }
 
+    // Cria as threads de saque
+    for (int i = 0; i < NUM_THREADS; i++) {
+        if (pthread_create(&threads_sac[i], NULL, transaction_sac, &account) != 0) {
+            perror("pthread_create failed");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // Espera todas as threads de saque terminarem terminarem
     for (int i = 0; i < NUM_THREADS; i++) {
         if (pthread_join(threads_sac[i], NULL) != 0) {
             perror("pthread_join failed");
