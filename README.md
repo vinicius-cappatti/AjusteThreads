@@ -2,9 +2,10 @@
 
 ## Participantes:
 
-Thomaz de Souza Scopel | RA: 10417183 | Email: 10417183@mackenzista.com.br
-
-Vinicius Sanches Cappatti | RA: 10418266 | Email: 10418266@mackenzista.com.br
+|Nome|RA|Email|
+|---|---|---|
+Thomaz de Souza Scopel | 10417183 | 10417183@mackenzista.com.br
+Vinicius Sanches Cappatti | 10418266 |10418266@mackenzista.com.br
 
 ## Objetivo:
 
